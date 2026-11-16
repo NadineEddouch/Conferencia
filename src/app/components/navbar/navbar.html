@@ -1,0 +1,5 @@
+<nav>
+  @for (item of items(); track item) {
+    <button [class.active]="active() === item" (click)="select(item)">{{ item }}</button>
+  }
+</nav>

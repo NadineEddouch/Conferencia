@@ -1,0 +1,18 @@
+<section>
+  <div class="icon">🔔</div>
+  <div class="content">
+    <h2>Zone de notifications</h2>
+    <p>Vous avez {{ notifications().length }} nouvelles notifications.</p>
+    <button (click)="toggle()">
+      {{ visible() ? 'Masquer' : 'Afficher' }} les notifications
+    </button>
+
+    @if (visible()) {
+      <ul>
+        @for (n of notifications(); track n) {
+          <li>{{ n }}</li>
+        }
+      </ul>
+    }
+  </div>
+</section>
