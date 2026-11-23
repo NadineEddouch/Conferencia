@@ -4,13 +4,13 @@ import { Header } from './components/header/header';
 import { Friends } from './components/friends/friends';
 import { Navbar } from './components/navbar/navbar';
 import { Profil } from './components/profil/profil';
-import { RouterOutlet } from '@angular/router';
 import { Notifications } from './components/notifications/notifications';
+import { ConferenceList } from './components/conference-list/conference-list';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,Footer,Header,Friends,Navbar,Notifications,Profil],
+  imports: [Footer,Header,Friends,Navbar,Notifications,Profil,ConferenceList],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

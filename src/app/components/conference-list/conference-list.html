@@ -1,0 +1,54 @@
+<section class="section-card conf-section" style="--accent: #0f766e; --accent-soft: #e0f7f5">
+  <div class="section-body">
+    <div class="conf-header">
+      <div class="section-icon">📅</div>
+      <div>
+        <h2>Liste des conférences à venir</h2>
+        <p class="hint">Cliquez sur une conférence pour afficher ses détails.</p>
+      </div>
+    </div>
+
+    <!-- Aucune conférence enregistrée -->
+    @if (conferences().length === 0) {
+      <p class="empty">Aucune conférence n'est enregistrée pour le moment.</p>
+    } @else {
+      <!-- Two-way data binding : recherche par titre -->
+      <input
+        class="search"
+        type="text"
+        placeholder="Taper le titre de la conférence"
+        [(ngModel)]="searchTerm"
+      />
+
+      <div class="grid">
+        @for (c of getConferences(); track c.id) {
+          <article class="conf-card">
+            <!-- Pipe uppercase : titre en majuscules -->
+            <h3 (click)="showDetails(c.id)">{{ c.title | uppercase }}</h3>
+
+            <!-- Pipe date : date formatée -->
+            <p><strong>Date :</strong> {{ c.date | date: 'dd/MM/yyyy' }}</p>
+            <p><strong>Lieu :</strong> {{ c.place }}</p>
+            <p><strong>Places restantes :</strong> {{ getPlaces(c) }}</p>
+
+            @if (selectedId() === c.id) {
+              <p class="details">{{ c.description }}</p>
+              <p class="details">Participants : {{ c.nbParticipants }}</p>
+            }
+
+            <button
+              class="btn"
+              [class.btn-available]="getPlaces(c) >= 10"
+              [class.btn-low]="getPlaces(c) > 0 && getPlaces(c) < 10"
+              [class.btn-full]="getPlaces(c) === 0"
+              (click)="register(c)">
+              S'inscrire
+            </button>
+          </article>
+        } @empty {
+          <p class="empty">Aucune conférence à venir ne correspond à votre recherche.</p>
+        }
+      </div>
+    }
+  </div>
+</section>
