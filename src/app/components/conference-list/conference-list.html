@@ -8,11 +8,9 @@
       </div>
     </div>
 
-    <!-- Aucune conférence enregistrée -->
     @if (conferences().length === 0) {
       <p class="empty">Aucune conférence n'est enregistrée pour le moment.</p>
     } @else {
-      <!-- Two-way data binding : recherche par titre -->
       <input
         class="search"
         type="text"
@@ -22,19 +20,15 @@
 
       <div class="grid">
         @for (c of getConferences(); track c.id) {
-          <article class="conf-card">
-            <!-- Pipe uppercase : titre en majuscules -->
-            <h3 (click)="showDetails(c.id)">{{ c.title | uppercase }}</h3>
+          <article
+            class="conf-card"
+            [class.selected]="selectedConference()?.id === c.id"
+            (click)="select(c)">
+            <h3>{{ c.title | uppercase }}</h3>
 
-            <!-- Pipe date : date formatée -->
             <p><strong>Date :</strong> {{ c.date | date: 'dd/MM/yyyy' }}</p>
             <p><strong>Lieu :</strong> {{ c.place }}</p>
             <p><strong>Places restantes :</strong> {{ getPlaces(c) }}</p>
-
-            @if (selectedId() === c.id) {
-              <p class="details">{{ c.description }}</p>
-              <p class="details">Participants : {{ c.nbParticipants }}</p>
-            }
 
             <button
               class="btn"
@@ -52,3 +46,8 @@
     }
   </div>
 </section>
+
+<!-- Composant enfant : on lui envoie la conférence choisie, il nous renvoie l'inscription -->
+<app-conference-details
+  [conference]="selectedConference()"
+  (registered)="register($event)" />

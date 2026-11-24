@@ -2,21 +2,20 @@ import { Component, signal } from '@angular/core';
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Conference } from '../../Models/conference';
+import { ConferenceDetails } from '../conference-details/conference-details';
 
 @Component({
   selector: 'app-conference-list',
-  imports: [FormsModule, DatePipe, UpperCasePipe],
+  imports: [FormsModule, DatePipe, UpperCasePipe, ConferenceDetails],
   templateUrl: './conference-list.html',
   styleUrl: './conference-list.css',
 })
 export class ConferenceList {
-  // texte tapé dans la barre de recherche
   searchTerm = signal('');
 
-  // id de la conférence dont on affiche les détails
-  selectedId = signal(0);
+  // conférence choisie par l'utilisateur (envoyée à l'enfant)
+  selectedConference = signal<Conference | null>(null);
 
-  // liste des conférences
   conferences = signal<Conference[]>([
     {
       id: 1,
@@ -57,7 +56,6 @@ export class ConferenceList {
     },
   ]);
 
-  // retourne les conférences à venir dont le titre contient le texte recherché
   getConferences() {
     const today = new Date();
     const search = this.searchTerm().toLowerCase();
@@ -66,18 +64,13 @@ export class ConferenceList {
     );
   }
 
-  // nombre de places restantes
   getPlaces(c: Conference) {
     return c.maxParticipants - c.nbParticipants;
   }
 
-  // afficher ou cacher les détails
-  showDetails(id: number) {
-    if (this.selectedId() === id) {
-      this.selectedId.set(0);
-    } else {
-      this.selectedId.set(id);
-    }
+  // clic sur une carte : on mémorise la conférence choisie
+  select(c: Conference) {
+    this.selectedConference.set(c);
   }
 
   // inscription : +1 participant

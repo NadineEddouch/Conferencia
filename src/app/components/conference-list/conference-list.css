@@ -112,3 +112,17 @@
   background: #c62828; /* rouge */
   cursor: not-allowed;
 }
+
+
+/* le composant contient maintenant la liste ET le détail, on les sépare */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* carte sélectionnée */
+.conf-card.selected {
+  border-color: #93c5fd;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
